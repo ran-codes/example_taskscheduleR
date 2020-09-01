@@ -16,16 +16,16 @@ data_updater_function = function(){
 
   ## Save data
   fwrite(cleaned_data, "../Clean/cleaned_data.csv")
-  save(cleaned_data, file = "../Clean/cleaned_data.csv" ) 
+  save(cleaned_data, file = "../Clean/cleaned_data.R" ) 
   
   ## Create Log (Only Once Manually)
-  # new_log = tibble(time =Sys.time(),action = "Started Log" )
-  # fwrite(new_log, "../Clean/update_log.csv")
+  new_log = tibble(time =as.character(Sys.time()),action = "Started Log" )
+  fwrite(new_log, "../Clean/update_log.csv")
   
   
   ## Update log 
   old_log = fread("../Clean/update_log.csv") %>% as_tibble() 
-  new_entry = tibble(time =Sys.time(),action = "Automatic update" )
+  new_entry = tibble(time =as.character(Sys.time()),action = "Automatic update" )
   list(old_log, new_entry) %>% 
     bind_rows() %>% 
     fwrite("../Clean/update_log.csv")
@@ -38,9 +38,6 @@ data_updater_function = function(){
   gitadd()
   gitcommit()
   gitpush()
-  
 }
-
-
 
 data_updater_function()
